@@ -2108,7 +2108,7 @@ func TestDecodeTable(t *testing.T) {
 			"struct with slice of struct property",
 			&SliceOfStruct{
 				Value: []Basic{
-					Basic{
+					{
 						Vstring: "vstring",
 						Vint:    2,
 						Vuint:   3,
@@ -2123,7 +2123,7 @@ func TestDecodeTable(t *testing.T) {
 			&map[string]interface{}{},
 			&map[string]interface{}{
 				"Value": []Basic{
-					Basic{
+					{
 						Vstring: "vstring",
 						Vint:    2,
 						Vuint:   3,
