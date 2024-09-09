@@ -169,44 +169,6 @@ import (
 	"sync"
 )
 
-var (
-	mapPool = sync.Pool{
-		New: func() any {
-			return make(map[string]any, 8)
-		},
-	}
-	slicePool = sync.Pool{
-		New: func() any {
-			return make([]any, 0, 8)
-		},
-	}
-)
-
-type fieldInfo struct {
-	Index []int
-	Name  string
-}
-
-var structFieldCache sync.Map // map[reflect.Type]map[string]fieldInfo
-
-func getStructFields(t reflect.Type) map[string]fieldInfo {
-	if cached, ok := structFieldCache.Load(t); ok {
-		return cached.(map[string]fieldInfo)
-	}
-
-	fields := make(map[string]fieldInfo)
-	for i := 0; i < t.NumField(); i++ {
-		f := t.Field(i)
-		fields[f.Name] = fieldInfo{Index: f.Index, Name: f.Name}
-		if tag := f.Tag.Get("mapstructure"); tag != "" {
-			fields[tag] = fieldInfo{Index: f.Index, Name: f.Name}
-		}
-	}
-
-	structFieldCache.Store(t, fields)
-	return fields
-}
-
 // DecodeHookFunc is the callback function that can be used for
 // data transformations. See "DecodeHook" in the DecoderConfig
 // struct.
